@@ -17,7 +17,8 @@ window.fsAttributes = window.fsAttributes || [];
 window.fsAttributes.push([
   'cmsload',
   async (listInstances: CMSList[]) => {
-    document.body.style.backgroundColor = 'red';
+    console.log(`Hello from the CMS`);
+
     // Get the list instance
     const [listInstance] = listInstances;
 
