@@ -44,7 +44,7 @@ window.fsAttributes.push([
  * Fetches fake products from Fake Store API.
  * @returns An array of {@link Product}.
  */
-const fetchProducts = async () => {
+const fetchProducts = async (): Promise<Product[]> => {
   try {
     const response = await fetch('https://fakestoreapi.com/products');
     const data: Product[] = await response.json();
@@ -69,7 +69,7 @@ const createItem = (product: Product, templateElement: HTMLDivElement) => {
   // Query inner elements
   // const image = newItem.querySelector<HTMLImageElement>('[data-element="image"]');
   const title = newItem.querySelector<HTMLHeadingElement>('[data-element="title"]');
-  const category = newItem.querySelector<HTMLDivElement>('[data-element="category"]');
+  const category = newItem.querySelector<HTMLParagraphElement>('[data-element="category"]');
   const description = newItem.querySelector<HTMLParagraphElement>('[data-element="description"]');
 
   // Populate inner elements
