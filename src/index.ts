@@ -4,10 +4,10 @@ import type { Product } from './cms/populate-external-data/types';
 import type { CMSList } from './types/CMSList';
 
 window.Webflow ||= [];
-window.Webflow.push(() => {
-  const name = 'John Doe';
+window.Webflow.push(async () => {
+  const name = 'John Do wewewewe';
   greetUser(name);
-  document.body.style.backgroundColor = 'blue';
+  // document.body.style.backgroundColor = 'blue';
 });
 
 /**
