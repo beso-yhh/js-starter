@@ -20,7 +20,9 @@ window.fsAttributes.push([
     console.log(`Hello from the CMS`);
 
     // Get the list instance
-    const [listInstance] = listInstances;
+    //const [listInstance] = listInstances;
+    const listInstance =
+      listInstances.find(({ wrapper }) => wrapper.id === 'products-wrapper') ?? listInstances[0];
 
     // Save a copy of the template
     const [firstItem] = listInstance.items;
@@ -67,16 +69,18 @@ const createItem = (product: Product, templateElement: HTMLDivElement) => {
   const newItem = templateElement.cloneNode(true) as HTMLDivElement;
 
   // Query inner elements
-  // const image = newItem.querySelector<HTMLImageElement>('[data-element="image"]');
+  const image = newItem.querySelector<HTMLImageElement>('[data-element="image"]');
   const title = newItem.querySelector<HTMLHeadingElement>('[data-element="title"]');
   const category = newItem.querySelector<HTMLParagraphElement>('[data-element="category"]');
   const description = newItem.querySelector<HTMLParagraphElement>('[data-element="description"]');
+  const price = newItem.querySelector<HTMLParagraphElement>('[data-element="price"]');
 
   // Populate inner elements
-  // if (image) image.src = product.image;
+  if (image) image.src = product.image;
   if (title) title.textContent = product.title;
   if (category) category.textContent = product.category;
   if (description) description.textContent = product.description;
+  if (price) price.textContent = '$ ' + product.price + ' USD';
 
   return newItem;
 };
