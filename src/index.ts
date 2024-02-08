@@ -35,10 +35,15 @@ window.fsAttributes.push([
     listInstance.clearItems();
 
     // Create the new items
-    const newItems = products.map((product) => createItem(product, itemTemplateElement));
-
+    await products.map(async (product) => {
+      itemTemplateElement.id = product.id + '#becaby';
+      const item = createItem(product, itemTemplateElement);
+      await listInstance.addItems([item]);
+      document.getElementById(`${product.id}#becaby`)?.addEventListener('click', function () {
+        window.open(`https://becapy-new.webflow.io/product/${product.title}`, '_self');
+      });
+    });
     // Populate the list
-    await listInstance.addItems(newItems);
   },
 ]);
 
