@@ -19,3 +19,26 @@ interface Rating {
   rate: number;
   count: number;
 }
+
+export interface Collection {
+  id: number;
+  title: string;
+  body_html: string;
+}
+
+// For collection products
+export interface ProductC {
+  id: number;
+  title: string;
+  body_html: string;
+  image: Image;
+}
+
+export interface Image {
+  src: string;
+}
+
+export interface CollectionProduct {
+  product: ProductC;
+  id: number;
+}
