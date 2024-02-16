@@ -93,6 +93,7 @@ if (document.currentScript?.baseURI.toString().includes('category-details')) {
           );
         });
       });
+      document.getElementById('loader-id')!.style.display = 'none';
     },
   ]);
 }

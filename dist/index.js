@@ -85,6 +85,7 @@
             );
           });
         });
+        document.getElementById("loader-id").style.display = "none";
       }
     ]);
   }
