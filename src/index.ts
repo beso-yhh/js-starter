@@ -1,6 +1,6 @@
 import { greetUser } from '$utils/greet';
 
-import type { Collection, CollectionProduct, Product } from './cms/populate-external-data/types';
+import type { Collection, CollectionProduct } from './cms/populate-external-data/types';
 import type { CMSList } from './types/CMSList';
 
 window.Webflow ||= [];
@@ -21,7 +21,9 @@ window.Webflow.push(async () => {
     4. Remove the Loader.
  */
 if (document.currentScript?.baseURI.toString().includes('category-details')) {
-  console.log('document.currentScript?.baseURI = ' + document.currentScript?.baseURI);
+  // console.log('document.currentScript?.baseURI = ' + document.currentScript?.baseURI);
+  const searchParams = new URLSearchParams(window.location.search);
+  const currentCollectionId = searchParams.get('collection');
   window.fsAttributes = window.fsAttributes || [];
   window.fsAttributes.push([
     'cmsload',
@@ -37,22 +39,25 @@ if (document.currentScript?.baseURI.toString().includes('category-details')) {
       const [firstItem] = listInstance.items;
       const itemTemplateElement = firstItem.element;
 
-      const collectionProducts = await fetchCollectionProducts(277396226115);
-
       // Fetch external data
-      const products = await fetchProducts();
+      const collectionProducts = await fetchCollectionProducts(Number(currentCollectionId)); // price_descending
 
       // Remove existing items
       listInstance.clearItems();
 
       // Create the new items
-      await products.map(async (product) => {
-        itemTemplateElement.id = product.id + '#becaby';
-        const item = createItem(product, itemTemplateElement);
+      await collectionProducts.map(async (collectionProduct) => {
+        itemTemplateElement.id = collectionProduct.id + '#becaby';
+        const item = createItem(collectionProduct, itemTemplateElement);
         await listInstance.addItems([item]);
-        document.getElementById(`${product.id}#becaby`)?.addEventListener('click', function () {
-          window.open(`https://becapy-new.webflow.io/product/${product.title}`, '_self');
-        });
+        document
+          .getElementById(`${collectionProduct.id}#becaby`)
+          ?.addEventListener('click', function () {
+            window.open(
+              `https://becapy-new.webflow.io/product-details?product_id=${collectionProduct.id}`,
+              '_self'
+            );
+          });
       });
       // Populate the list
       const collectionInstance =
@@ -66,8 +71,20 @@ if (document.currentScript?.baseURI.toString().includes('category-details')) {
 
       // Create the new items
       await collections.map(async (collection) => {
+        if (collection.id === Number(currentCollectionId)) {
+          if (document.getElementById('category-head-id') != null) {
+            document.getElementById('category-head-id')!.textContent =
+              collection.title.toUpperCase();
+          }
+          document.getElementById('category-description-id')!.innerHTML =
+            collection.body_html.toUpperCase();
+        }
         collectionItemTemplateElement.id = collection.id + '#becaby';
-        const item = createCollectionItem(collection, collectionItemTemplateElement);
+        const item = createCollectionItem(
+          collection,
+          collectionItemTemplateElement,
+          currentCollectionId!
+        );
         await collectionInstance.addItems([item]);
         document.getElementById(`${collection.id}#becaby`)?.addEventListener('click', function () {
           window.open(
@@ -84,16 +101,16 @@ if (document.currentScript?.baseURI.toString().includes('category-details')) {
  * Fetches fake products from Fake Store API.
  * @returns An array of {@link Product}.
  */
-const fetchProducts = async (): Promise<Product[]> => {
-  try {
-    const response = await fetch('https://fakestoreapi.com/products');
-    const data: Product[] = await response.json();
+// const fetchProducts = async (): Promise<Product[]> => {
+//   try {
+//     const response = await fetch('https://fakestoreapi.com/products');
+//     const data: Product[] = await response.json();
 
-    return data;
-  } catch (error) {
-    return [];
-  }
-};
+//     return data;
+//   } catch (error) {
+//     return [];
+//   }
+// };
 
 const fetchCollectionProducts = async (collectionId: number): Promise<CollectionProduct[]> => {
   try {
@@ -115,28 +132,30 @@ const fetchCollectionProducts = async (collectionId: number): Promise<Collection
  *
  * @returns A new Collection Item element.
  */
-const createItem = (product: Product, templateElement: HTMLDivElement) => {
+const createItem = (collectionProduct: CollectionProduct, templateElement: HTMLDivElement) => {
   // Clone the template element
   const newItem = templateElement.cloneNode(true) as HTMLDivElement;
 
   // Query inner elements
   const image = newItem.querySelector<HTMLImageElement>('[data-element="image"]');
   const title = newItem.querySelector<HTMLHeadingElement>('[data-element="title"]');
-  const category = newItem.querySelector<HTMLParagraphElement>('[data-element="category"]');
   const description = newItem.querySelector<HTMLParagraphElement>('[data-element="description"]');
   const price = newItem.querySelector<HTMLParagraphElement>('[data-element="price"]');
 
   // Populate inner elements
-  if (image) image.src = product.image;
-  if (title) title.textContent = product.title;
-  if (category) category.textContent = product.category;
-  if (description) description.textContent = product.description;
-  if (price) price.textContent = '$ ' + product.price + ' USD';
+  if (image) image.src = collectionProduct.product.image.src;
+  if (title) title.textContent = collectionProduct.product.title;
+  if (description) description.innerHTML = collectionProduct.product.body_html;
+  if (price) price.textContent = '19.99' + ' AED';
 
   return newItem;
 };
 
-const createCollectionItem = (collection: Collection, templateElement: HTMLDivElement) => {
+const createCollectionItem = (
+  collection: Collection,
+  templateElement: HTMLDivElement,
+  collectioId: string
+) => {
   // Clone the template element
   const newItem = templateElement.cloneNode(true) as HTMLDivElement;
 
@@ -145,6 +164,10 @@ const createCollectionItem = (collection: Collection, templateElement: HTMLDivEl
 
   // Populate inner elements
   if (title) title.textContent = collection.title;
+  if (collection.id === Number(collectioId)) {
+    title!.style.fontWeight = 'bold';
+    title!.style.color = 'black';
+  }
 
   return newItem;
 };

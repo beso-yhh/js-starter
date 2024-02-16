@@ -35,7 +35,8 @@
     greetUser(name);
   });
   if (document.currentScript?.baseURI.toString().includes("category-details")) {
-    console.log("document.currentScript?.baseURI = " + document.currentScript?.baseURI);
+    const searchParams = new URLSearchParams(window.location.search);
+    const currentCollectionId = searchParams.get("collection");
     window.fsAttributes = window.fsAttributes || [];
     window.fsAttributes.push([
       "cmsload",
@@ -44,15 +45,17 @@
         const listInstance = listInstances.find(({ wrapper }) => wrapper.id === "products-cms-id") ?? listInstances[0];
         const [firstItem] = listInstance.items;
         const itemTemplateElement = firstItem.element;
-        const collectionProducts = await fetchCollectionProducts(277396226115);
-        const products = await fetchProducts();
+        const collectionProducts = await fetchCollectionProducts(Number(currentCollectionId));
         listInstance.clearItems();
-        await products.map(async (product) => {
-          itemTemplateElement.id = product.id + "#becaby";
-          const item = createItem(product, itemTemplateElement);
+        await collectionProducts.map(async (collectionProduct) => {
+          itemTemplateElement.id = collectionProduct.id + "#becaby";
+          const item = createItem(collectionProduct, itemTemplateElement);
           await listInstance.addItems([item]);
-          document.getElementById(`${product.id}#becaby`)?.addEventListener("click", function() {
-            window.open(`https://becapy-new.webflow.io/product/${product.title}`, "_self");
+          document.getElementById(`${collectionProduct.id}#becaby`)?.addEventListener("click", function() {
+            window.open(
+              `https://becapy-new.webflow.io/product-details?product_id=${collectionProduct.id}`,
+              "_self"
+            );
           });
         });
         const collectionInstance = listInstances.find(({ wrapper }) => wrapper.id === "categories-cms-id") ?? listInstances[0];
@@ -62,8 +65,18 @@
         const collectionItemTemplateElement = firstCollectioItem.element;
         collectionInstance.clearItems();
         await collections.map(async (collection) => {
+          if (collection.id === Number(currentCollectionId)) {
+            if (document.getElementById("category-head-id") != null) {
+              document.getElementById("category-head-id").textContent = collection.title.toUpperCase();
+            }
+            document.getElementById("category-description-id").innerHTML = collection.body_html.toUpperCase();
+          }
           collectionItemTemplateElement.id = collection.id + "#becaby";
-          const item = createCollectionItem(collection, collectionItemTemplateElement);
+          const item = createCollectionItem(
+            collection,
+            collectionItemTemplateElement,
+            currentCollectionId
+          );
           await collectionInstance.addItems([item]);
           document.getElementById(`${collection.id}#becaby`)?.addEventListener("click", function() {
             window.open(
@@ -75,15 +88,6 @@
       }
     ]);
   }
-  var fetchProducts = async () => {
-    try {
-      const response = await fetch("https://fakestoreapi.com/products");
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return [];
-    }
-  };
   var fetchCollectionProducts = async (collectionId) => {
     try {
       const response = await fetch(
@@ -95,30 +99,31 @@
       return [];
     }
   };
-  var createItem = (product, templateElement) => {
+  var createItem = (collectionProduct, templateElement) => {
     const newItem = templateElement.cloneNode(true);
     const image = newItem.querySelector('[data-element="image"]');
     const title = newItem.querySelector('[data-element="title"]');
-    const category = newItem.querySelector('[data-element="category"]');
     const description = newItem.querySelector('[data-element="description"]');
     const price = newItem.querySelector('[data-element="price"]');
     if (image)
-      image.src = product.image;
+      image.src = collectionProduct.product.image.src;
     if (title)
-      title.textContent = product.title;
-    if (category)
-      category.textContent = product.category;
+      title.textContent = collectionProduct.product.title;
     if (description)
-      description.textContent = product.description;
+      description.innerHTML = collectionProduct.product.body_html;
     if (price)
-      price.textContent = "$ " + product.price + " USD";
+      price.textContent = "19.99 AED";
     return newItem;
   };
-  var createCollectionItem = (collection, templateElement) => {
+  var createCollectionItem = (collection, templateElement, collectioId) => {
     const newItem = templateElement.cloneNode(true);
     const title = newItem.querySelector('[data-element="collection_title"]');
     if (title)
       title.textContent = collection.title;
+    if (collection.id === Number(collectioId)) {
+      title.style.fontWeight = "bold";
+      title.style.color = "black";
+    }
     return newItem;
   };
   var getCustomCategories = async () => {
