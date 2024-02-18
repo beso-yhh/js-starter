@@ -94,6 +94,13 @@ if (document.currentScript?.baseURI.toString().includes('category-details')) {
         });
       });
       document.getElementById('loader-id')!.style.display = 'none';
+      window.Webflow.push(function () {
+        $('html').attr('data-wf-page', '65cdfd5f1054c1ba09309d71');
+        window.Webflow && window.Webflow.destroy();
+        window.Webflow && window.Webflow.ready();
+        window.Webflow && window.Webflow.require('ix2').init();
+        document.dispatchEvent(new Event('readystatechange'));
+      });
     },
   ]);
 }
@@ -161,7 +168,7 @@ const createCollectionItem = (
   const newItem = templateElement.cloneNode(true) as HTMLDivElement;
 
   // Query inner elements
-  const title = newItem.querySelector<HTMLImageElement>('[data-element="collection_title"]');
+  const title = newItem.querySelector<HTMLHeadingElement>('[data-element="collection_title"]');
 
   // Populate inner elements
   if (title) title.textContent = collection.title;

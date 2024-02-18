@@ -86,6 +86,13 @@
           });
         });
         document.getElementById("loader-id").style.display = "none";
+        window.Webflow.push(function() {
+          $("html").attr("data-wf-page", "65cdfd5f1054c1ba09309d71");
+          window.Webflow && window.Webflow.destroy();
+          window.Webflow && window.Webflow.ready();
+          window.Webflow && window.Webflow.require("ix2").init();
+          document.dispatchEvent(new Event("readystatechange"));
+        });
       }
     ]);
   }
