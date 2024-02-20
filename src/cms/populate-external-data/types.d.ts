@@ -32,6 +32,12 @@ export interface ProductC {
   title: string;
   body_html: string;
   image: Image;
+  variants: Variant[];
+}
+
+export interface Variant {
+  title: string;
+  price: string;
 }
 
 export interface Image {

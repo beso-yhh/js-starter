@@ -113,14 +113,15 @@
     const title = newItem.querySelector('[data-element="title"]');
     const description = newItem.querySelector('[data-element="description"]');
     const price = newItem.querySelector('[data-element="price"]');
-    if (image)
+    console.log(collectionProduct.product.image);
+    if (image && collectionProduct.product.image !== null)
       image.src = collectionProduct.product.image.src;
     if (title)
       title.textContent = collectionProduct.product.title;
     if (description)
       description.innerHTML = collectionProduct.product.body_html;
     if (price)
-      price.textContent = "19.99 AED";
+      price.textContent = collectionProduct.product.variants.length === 0 ? "-" : collectionProduct.product.variants[0].price + " AED";
     return newItem;
   };
   var createCollectionItem = (collection, templateElement, collectioId) => {

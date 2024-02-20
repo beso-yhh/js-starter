@@ -149,12 +149,17 @@ const createItem = (collectionProduct: CollectionProduct, templateElement: HTMLD
   const title = newItem.querySelector<HTMLHeadingElement>('[data-element="title"]');
   const description = newItem.querySelector<HTMLParagraphElement>('[data-element="description"]');
   const price = newItem.querySelector<HTMLParagraphElement>('[data-element="price"]');
-
+  console.log(collectionProduct.product.image);
   // Populate inner elements
-  if (image) image.src = collectionProduct.product.image.src;
+  if (image && collectionProduct.product.image !== null)
+    image.src = collectionProduct.product.image.src;
   if (title) title.textContent = collectionProduct.product.title;
   if (description) description.innerHTML = collectionProduct.product.body_html;
-  if (price) price.textContent = '19.99' + ' AED';
+  if (price)
+    price.textContent =
+      collectionProduct.product.variants.length === 0
+        ? '-'
+        : collectionProduct.product.variants[0].price + ' AED';
 
   return newItem;
 };
