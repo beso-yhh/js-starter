@@ -73,11 +73,9 @@ if (document.currentScript?.baseURI.toString().includes('category-details')) {
       await collections.map(async (collection) => {
         if (collection.id === Number(currentCollectionId)) {
           if (document.getElementById('category-head-id') != null) {
-            document.getElementById('category-head-id')!.textContent =
-              collection.title.toUpperCase();
+            document.getElementById('category-head-id')!.textContent = collection.title;
           }
-          document.getElementById('category-description-id')!.innerHTML =
-            collection.body_html.toUpperCase();
+          document.getElementById('category-description-id')!.innerHTML = collection.body_html;
         }
         collectionItemTemplateElement.id = collection.id + '#becaby';
         const item = createCollectionItem(
