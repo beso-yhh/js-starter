@@ -1,3 +1,4 @@
+import { loadCart } from '$utils/cart';
 import { greetUser } from '$utils/greet';
 
 import type { Collection, CollectionProduct } from './cms/populate-external-data/types';
@@ -101,6 +102,8 @@ if (document.currentScript?.baseURI.toString().includes('category-details')) {
       });
     },
   ]);
+} else if (document.currentScript?.baseURI.toString().includes('product-details')) {
+  loadCart();
 }
 
 /**
