@@ -30,7 +30,7 @@ if (document.currentScript?.baseURI.toString().includes('category-details')) {
     'cmsload',
     async (listInstances: CMSList[]) => {
       console.log(`Hello from the CMS`);
-
+      let collectionsCount = 0;
       // Get the list instance
       //const [listInstance] = listInstances;
       const listInstance =
@@ -61,36 +61,55 @@ if (document.currentScript?.baseURI.toString().includes('category-details')) {
           });
       });
       // Populate the list
-      const collectionInstance =
-        listInstances.find(({ wrapper }) => wrapper.id === 'categories-cms-id') ?? listInstances[0];
+      // const collectionInstance =
+      //   listInstances.find(({ wrapper }) => wrapper.id === 'categories-cms-id') ?? listInstances[0];
       const collections = await getCustomCategories();
-      console.log('collections[0].title = ' + collections[0].title);
-      const [firstCollectioItem] = collectionInstance.items;
-      const collectionItemTemplateElement = firstCollectioItem.element;
-      // Remove existing items
-      collectionInstance.clearItems();
+      // console.log('collections[0].title = ' + collections[0].title);
+      // const [firstCollectioItem] = collectionInstance.items;
+      // const collectionItemTemplateElement = firstCollectioItem.element;
+      // // Remove existing items
+      // collectionInstance.clearItems();
 
       // Create the new items
       await collections.map(async (collection) => {
+        collectionsCount++;
         if (collection.id === Number(currentCollectionId)) {
           if (document.getElementById('category-head-id') != null) {
             document.getElementById('category-head-id')!.textContent = collection.title;
           }
           document.getElementById('category-description-id')!.innerHTML = collection.body_html;
         }
-        collectionItemTemplateElement.id = collection.id + '#becaby';
-        const item = createCollectionItem(
-          collection,
-          collectionItemTemplateElement,
-          currentCollectionId!
-        );
-        await collectionInstance.addItems([item]);
-        document.getElementById(`${collection.id}#becaby`)?.addEventListener('click', function () {
-          window.open(
-            `https://becapy-new.webflow.io/category-details?collection=${collection.id}`,
-            '_self'
-          );
-        });
+        // collectionItemTemplateElement.id = collection.id + '#becaby';
+        // const item = createCollectionItem(
+        //   collection,
+        //   collectionItemTemplateElement,
+        //   currentCollectionId!
+        // );
+
+        if (collectionsCount === collections.length) {
+          if (collection.id === Number(currentCollectionId)) {
+            document.getElementById('flex-text-id')!.innerHTML +=
+              `<a href="/" class="text-decoration-none link">${collection.title}</a>`;
+          } else {
+            document.getElementById('flex-text-id')!.innerHTML +=
+              `<a href="/" class="text-decoration-none link">${collection.title}</a>`;
+          }
+        } else {
+          if (collection.id === Number(currentCollectionId)) {
+            document.getElementById('flex-text-id')!.innerHTML +=
+              `<a href="/" class="text-decoration-none link">${collection.title}</a> <div class="breadcrumb-divider-2">/</div>`;
+          } else {
+            document.getElementById('flex-text-id')!.innerHTML +=
+              `<a href="/" class="text-decoration-none link">${collection.title}</a> <div class="breadcrumb-divider-2">/</div>`;
+          }
+        }
+        //await collectionInstance.addItems([item]);
+        // document.getElementById(`${collection.id}#becaby`)?.addEventListener('click', function () {
+        //   window.open(
+        //     `https://becapy-new.webflow.io/category-details?collection=${collection.id}`,
+        //     '_self'
+        //   );
+        // });
       });
       document.getElementById('loader-id')!.style.display = 'none';
       window.Webflow.push(function () {
