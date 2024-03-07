@@ -209,4 +209,4 @@ const getGridElement = (title: string, image: string, price: string, discountedP
         data-commerce-sku-id="659d238ff90eb981ff648528" value="${countItems}" readonly>
 </div>`;
 }
-// https://cdn.jsdelivr.net/gh/beso-yhh/js-starter@1.4.0/dist/index.js
+// https://cdn.jsdelivr.net/gh/beso-yhh/js-starter@1.4.1/dist/index.js

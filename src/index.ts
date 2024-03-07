@@ -85,22 +85,22 @@ if (document.currentScript?.baseURI.toString().includes('category-details')) {
         //   collectionItemTemplateElement,
         //   currentCollectionId!
         // );
-
+        const url = 'https://becapy-new.webflow.io/category-details?collection=' + collection.id;
         if (collectionsCount === collections.length) {
           if (collection.id === Number(currentCollectionId)) {
             document.getElementById('flex-text-id')!.innerHTML +=
-              `<a href="/" class="text-decoration-none link">${collection.title}</a>`;
+              `<a href=${url} class="text-decoration-none link">${collection.title}</a>`;
           } else {
             document.getElementById('flex-text-id')!.innerHTML +=
-              `<a href="/" class="text-decoration-none link">${collection.title}</a>`;
+              `<a href=${url} class="text-decoration-none link">${collection.title}</a>`;
           }
         } else {
           if (collection.id === Number(currentCollectionId)) {
             document.getElementById('flex-text-id')!.innerHTML +=
-              `<a href="/" class="text-decoration-none link">${collection.title}</a> <div class="breadcrumb-divider-2">/</div>`;
+              `<a href=${url} class="text-decoration-none link">${collection.title}</a> <div class="breadcrumb-divider-2">/</div>`;
           } else {
             document.getElementById('flex-text-id')!.innerHTML +=
-              `<a href="/" class="text-decoration-none link">${collection.title}</a> <div class="breadcrumb-divider-2">/</div>`;
+              `<a href=${url} class="text-decoration-none link">${collection.title}</a> <div class="breadcrumb-divider-2">/</div>`;
           }
         }
         //await collectionInstance.addItems([item]);
