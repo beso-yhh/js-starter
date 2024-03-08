@@ -317,12 +317,5 @@ mutation cartLinesRemove {
   });
 };
 
-// https://cdn.jsdelivr.net/gh/beso-yhh/js-starter@1.4.3/dist/index.js
 
-document.getElementById("qr-plus-id").addEventListener('click', function () {
-  if (parseInt(document.getElementById("qr-code-quantity-field").value) > 0) {
-    document.getElementById("qr-code-quantity-field").value = parseInt(document.getElementById("qr-code-quantity-field").value) + 1;
-  } else {
-    document.getElementById("qr-code-quantity-field").value = 1;
-  }
-});
+// https://cdn.jsdelivr.net/gh/beso-yhh/js-starter@1.4.3/dist/index.js
