@@ -318,4 +318,4 @@ mutation cartLinesRemove {
 };
 
 
-// https://cdn.jsdelivr.net/gh/beso-yhh/js-starter@1.4.3/dist/index.js
+// https://cdn.jsdelivr.net/gh/beso-yhh/js-starter@1.4.5/dist/index.js
