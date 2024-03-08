@@ -1,4 +1,4 @@
-import { loadCart } from '$utils/cart';
+import { addToCart, loadCart } from '$utils/cart';
 import { greetUser } from '$utils/greet';
 
 import type { Collection, CollectionProduct } from './cms/populate-external-data/types';
@@ -21,6 +21,7 @@ window.Webflow.push(async () => {
     3. Matching Collection Id with which one is belong to, for changing the header and description 
     4. Remove the Loader.
  */
+loadCart();
 if (document.currentScript?.baseURI.toString().includes('category-details')) {
   // console.log('document.currentScript?.baseURI = ' + document.currentScript?.baseURI);
   const searchParams = new URLSearchParams(window.location.search);
@@ -85,23 +86,17 @@ if (document.currentScript?.baseURI.toString().includes('category-details')) {
         //   collectionItemTemplateElement,
         //   currentCollectionId!
         // );
+        console.log('collectionsCount = ' + collectionsCount);
         const url = 'https://becapy-new.webflow.io/category-details?collection=' + collection.id;
         if (collectionsCount === collections.length) {
-          if (collection.id === Number(currentCollectionId)) {
-            document.getElementById('flex-text-id')!.innerHTML +=
-              `<a href=${url} class="text-decoration-none link">${collection.title}</a>`;
-          } else {
-            document.getElementById('flex-text-id')!.innerHTML +=
-              `<a href=${url} class="text-decoration-none link">${collection.title}</a>`;
-          }
+          console.log('collectionsCount = ' + collectionsCount);
+          document.getElementById('flex-text-id')!.innerHTML +=
+            `<a href=${url} class="text-decoration-none link">${collection.title}</a>`;
         } else {
-          if (collection.id === Number(currentCollectionId)) {
-            document.getElementById('flex-text-id')!.innerHTML +=
-              `<a href=${url} class="text-decoration-none link">${collection.title}</a> <div class="breadcrumb-divider-2">/</div>`;
-          } else {
-            document.getElementById('flex-text-id')!.innerHTML +=
-              `<a href=${url} class="text-decoration-none link">${collection.title}</a> <div class="breadcrumb-divider-2">/</div>`;
-          }
+          console.log('collectionsCount = ' + collectionsCount);
+
+          document.getElementById('flex-text-id')!.innerHTML +=
+            `<a href=${url} class="text-decoration-none link">${collection.title}</a> <div class="breadcrumb-divider-2">/</div>`;
         }
         //await collectionInstance.addItems([item]);
         // document.getElementById(`${collection.id}#becaby`)?.addEventListener('click', function () {
@@ -123,6 +118,18 @@ if (document.currentScript?.baseURI.toString().includes('category-details')) {
   ]);
 } else if (document.currentScript?.baseURI.toString().includes('product-details')) {
   loadCart();
+  document.getElementById('add-to-cart-btn-id')!.addEventListener('click', async function () {
+    await addToCart(
+      Number(document.getElementById('qr-code-quantity-field')!.value),
+      localStorage.getItem('cart_id')!,
+      'gid://shopify/ProductVariant/40777319907395'
+    );
+    await addToCart(
+      Number(document.getElementById('product-quantity-field')!.value),
+      localStorage.getItem('cart_id')!,
+      'gid://shopify/ProductVariant/40992758038595'
+    );
+  });
 }
 
 /**
