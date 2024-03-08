@@ -103,8 +103,12 @@ const fillCartItems = async (cartId: string) => {
       document.getElementById("cart-quantity-id")!.style.justifyContent = "center";
 
       document.getElementById("subtotal-text-id")!.textContent = ql.data.cart.cost.subtotalAmount.amount;
+      document.getElementById("subtotal-div-id")!.style.display = "flex";
+
       document.getElementById("cart-quantity-id")!.style.display = "flex";
       document.getElementById("cart-quantity-id")!.style.justifyContent = "center";
+
+      document.getElementById("checkout-btn-id")!.style.display = "block";
 
       createElements(ql.data.cart.lines.edges);
     } else {
@@ -116,8 +120,8 @@ const fillCartItems = async (cartId: string) => {
       document.getElementById("no-items-id")!.style.display = "block";
       document.getElementById("div-loader-id")!.style.display = "none";
       document.getElementById("subtotal-div-id")!.style.display = "none";
-
       document.getElementById("cart-quantity-id")!.style.display = "none";
+      document.getElementById("checkout-btn-id")!.style.display = "none";
     }
   }).catch(e => {
     document.getElementById("cart-quantity-id")!.style.display = "none";
@@ -313,4 +317,12 @@ mutation cartLinesRemove {
   });
 };
 
-// https://cdn.jsdelivr.net/gh/beso-yhh/js-starter@1.4.1/dist/index.js
+// https://cdn.jsdelivr.net/gh/beso-yhh/js-starter@1.4.3/dist/index.js
+
+document.getElementById("qr-plus-id").addEventListener('click', function () {
+  if (parseInt(document.getElementById("qr-code-quantity-field").value) > 0) {
+    document.getElementById("qr-code-quantity-field").value = parseInt(document.getElementById("qr-code-quantity-field").value) + 1;
+  } else {
+    document.getElementById("qr-code-quantity-field").value = 1;
+  }
+});
