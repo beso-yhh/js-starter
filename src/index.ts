@@ -2,6 +2,7 @@ import { addToCart, loadCart } from '$utils/cart';
 import { greetUser } from '$utils/greet';
 
 import type { Collection, CollectionProduct } from './cms/populate-external-data/types';
+import { initProductDetails } from './products/products-details';
 import type { CMSList } from './types/CMSList';
 
 window.Webflow ||= [];
@@ -117,20 +118,44 @@ if (document.currentScript?.baseURI.toString().includes('category-details')) {
     },
   ]);
 } else if (document.currentScript?.baseURI.toString().includes('product-details')) {
-  loadCart();
-  document.getElementById('add-to-cart-btn-id')!.addEventListener('click', async function () {
-    await addToCart(
-      Number(document.getElementById('qr-code-quantity-field')!.value),
-      localStorage.getItem('cart_id')!,
-      'gid://shopify/ProductVariant/40777319907395'
-    );
-    await addToCart(
-      Number(document.getElementById('product-quantity-field')!.value),
-      localStorage.getItem('cart_id')!,
-      'gid://shopify/ProductVariant/40992758038595'
-    );
-  });
+  initProductDetails();
 }
+
+const getFirstVariant = async (id: string) => {
+  const query = `
+{
+  product(id:"gid://shopify/Product/${id}"){
+    title
+    tags
+		variants(first: 1) {
+		  edges {
+		    node {
+		      id
+		    }
+		  }
+		}  
+  }
+}
+`;
+  let resultId = '';
+  await fetch('https://209c5e-2.myshopify.com/api/2024-01/graphql.json', {
+    method: 'POST',
+    body: JSON.stringify({
+      query: query,
+    }),
+    headers: {
+      'X-Shopify-Storefront-Access-Token': '5adb4164b44b050e0c8adad04b9dfa32',
+      'Content-type': 'application/json',
+    },
+  })
+    .then(async (result: any) => {
+      resultId = result.data.product.variants.edges[0].node.id;
+    })
+    .catch((e) => {
+      console.log('e = ' + e.toString());
+    });
+  return resultId;
+};
 
 /**
  * Fetches fake products from Fake Store API.
