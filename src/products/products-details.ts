@@ -45,11 +45,10 @@ const initListeneres = (productId: string) => {
     });
 
     document.getElementById('one-off-add-to-cart-id')!.addEventListener('click', async function () {
-        await addToCart(1, localStorage.getItem("cart_id")!, selectedVariantId);
-        await addToCart(1, localStorage.getItem("cart_id")!, "gid://shopify/ProductVariant/40777319907395");
+        const value = document.getElementById("product-quantity-field")!.value;
+        await addToCart(value, localStorage.getItem("cart_id")!, selectedVariantId);
+        await addToCart(value, localStorage.getItem("cart_id")!, "gid://shopify/ProductVariant/40777319907395");
     });
-
-
 }
 
 const loadVariants = async (productId: string) => {
