@@ -46,6 +46,7 @@ const initListeneres = (productId: string) => {
 
     document.getElementById('one-off-add-to-cart-id')!.addEventListener('click', async function () {
         const value = document.getElementById("product-quantity-field")!.value;
+        console.log("valueeee = " + value);
         await addToCart(value, localStorage.getItem("cart_id")!, selectedVariantId);
         await addToCart(value, localStorage.getItem("cart_id")!, "gid://shopify/ProductVariant/40777319907395");
     });
