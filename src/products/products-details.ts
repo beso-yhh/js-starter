@@ -24,12 +24,11 @@ export const initProductDetails = () => {
             productId = pair[1];
         }
     }
-    initListeneres(productId);
+    initListeneres();
     loadVariants(productId);
-
 };
 
-const initListeneres = (productId: string) => {
+const initListeneres = () => {
     document.getElementById('add-to-cart-btn-id')!.addEventListener('click', async function () {
         if (countOfVariants === 1 && option1 === "") {
             document.getElementById("error-text-id")!.style.display = "block";
@@ -39,16 +38,24 @@ const initListeneres = (productId: string) => {
             document.getElementById("error-text-id")!.style.display = "block";
 
         } else {
-            console.log("selectedVariantId = " + selectedVariantId);
             addToCart(1, localStorage.getItem("cart_id")!, selectedVariantId);
         }
     });
 
     document.getElementById('one-off-add-to-cart-id')!.addEventListener('click', async function () {
-        const value = document.getElementById("product-quantity-field")!.value;
-        console.log("valueeee = " + value);
-        await addToCart(value, localStorage.getItem("cart_id")!, selectedVariantId);
-        await addToCart(value, localStorage.getItem("cart_id")!, "gid://shopify/ProductVariant/40777319907395");
+        if (countOfVariants === 1 && option1 === "") {
+            document.getElementById("one-off-error-text-id")!.style.display = "block";
+        } else if (countOfVariants === 2 && (option1 === "" || option2 === "")) {
+            document.getElementById("one-off-error-text-id")!.style.display = "block";
+        } else if (countOfVariants === 3 && (option1 === "" || option2 === "" || option3 === "")) {
+            document.getElementById("one-off-error-text-id")!.style.display = "block";
+
+        } else {
+            const value = document.getElementById("product-quantity-field")!.value;
+            console.log("valueeee = " + value);
+            await addToCart(value, localStorage.getItem("cart_id")!, selectedVariantId);
+            await addToCart(value, localStorage.getItem("cart_id")!, "gid://shopify/ProductVariant/40777319907395");
+        }
     });
 }
 
@@ -156,3 +163,4 @@ const checkOneOffVisibility = () => {
         document.getElementById("make-it-one-off-btn-id")!.style.display = "block";
     }
 }
+
