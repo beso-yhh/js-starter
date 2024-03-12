@@ -116,6 +116,8 @@ function addElementToGrid(value: string, valueId: string, type: string, variants
             option3 = value;
         }
         document.getElementById("error-text-id")!.style.display = "none";
+        document.getElementById("one-off-error-text-id")!.style.display = "none";
+
 
         const items = [...document.getElementsByClassName(`${type}div`)];
         items.forEach(item => {
