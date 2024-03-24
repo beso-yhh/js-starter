@@ -1,6 +1,6 @@
-"use strict";(()=>{var p="1dba4d16bdf57a57f61e90de5a60175d",k="",m=async()=>{let e=localStorage.getItem("cart_id");console.log("cart_id = "+e),e?await E(e):await v()},E=async e=>{let o=`
+"use strict";(()=>{var y="1dba4d16bdf57a57f61e90de5a60175d",q="",u=async()=>{let t=localStorage.getItem("cart_id");console.log("cart_id = "+t),t?await S(t):await l(!0)},S=async t=>{let n=`
  query GetCart { 
-        cart(id: "${e}") {
+        cart(id: "${t}") {
           checkoutUrl
           cost {
             totalAmount {
@@ -56,7 +56,7 @@
           }
         }
       }
-`;await fetch("https://209c5e-2.myshopify.com/api/2024-01/graphql.json",{method:"POST",body:JSON.stringify({query:o}),headers:{"X-Shopify-Storefront-Access-Token":p,"Content-type":"application/json"}}).then(async t=>{let n=await t.json();console.log("Checkout URL = "+n.data.cart.checkoutUrl),k=n.data.cart.checkoutUrl,document.getElementById("checkout-btn-id").addEventListener("click",function(){window.open(n.data.cart.checkoutUrl,"_blank")}),n.data.cart.lines.edges.length>0?(document.getElementById("no-items-id").style.display="none",document.getElementById("div-loader-id").style.display="none",document.getElementById("cart-quantity-id").textContent=n.data.cart.lines.edges.length.toString(),document.getElementById("cart-quantity-id").style.display="flex",document.getElementById("cart-quantity-id").style.justifyContent="center",document.getElementById("subtotal-text-id").textContent=n.data.cart.cost.subtotalAmount.amount,document.getElementById("subtotal-div-id").style.display="flex",document.getElementById("cart-quantity-id").style.display="flex",document.getElementById("cart-quantity-id").style.justifyContent="center",document.getElementById("checkout-btn-id").style.display="block",B(n.data.cart.lines.edges)):(document.querySelectorAll(".cart-grid-item").forEach(i=>i.parentNode.removeChild(i)),document.getElementById("no-items-id").style.display="block",document.getElementById("div-loader-id").style.display="none",document.getElementById("subtotal-div-id").style.display="none",document.getElementById("cart-quantity-id").style.display="none",document.getElementById("checkout-btn-id").style.display="none")}).catch(t=>{document.getElementById("cart-quantity-id").style.display="none",console.log("e = "+t.toString())})},v=async()=>{let e=`
+`;await fetch("https://209c5e-2.myshopify.com/api/2024-01/graphql.json",{method:"POST",body:JSON.stringify({query:n}),headers:{"X-Shopify-Storefront-Access-Token":y,"Content-type":"application/json"}}).then(async e=>{let o=await e.json();console.log("Checkout URL = "+o.data.cart.checkoutUrl),q=o.data.cart.checkoutUrl,document.getElementById("checkout-btn-id").addEventListener("click",function(){window.open(o.data.cart.checkoutUrl,"_blank")}),o.data.cart.lines.edges.length>0?(document.getElementById("no-items-id").style.display="none",document.getElementById("div-loader-id").style.display="none",document.getElementById("cart-quantity-id").textContent=o.data.cart.lines.edges.length.toString(),document.getElementById("cart-quantity-id").style.display="flex",document.getElementById("cart-quantity-id").style.justifyContent="center",document.getElementById("subtotal-text-id").textContent=o.data.cart.cost.subtotalAmount.amount,document.getElementById("subtotal-div-id").style.display="flex",document.getElementById("cart-quantity-id").style.display="flex",document.getElementById("cart-quantity-id").style.justifyContent="center",document.getElementById("checkout-btn-id").style.display="block",x(o.data.cart.lines.edges)):(document.querySelectorAll(".cart-grid-item").forEach(i=>i.parentNode.removeChild(i)),document.getElementById("no-items-id").style.display="block",document.getElementById("div-loader-id").style.display="none",document.getElementById("subtotal-div-id").style.display="none",document.getElementById("cart-quantity-id").style.display="none",document.getElementById("checkout-btn-id").style.display="none")}).catch(async e=>{document.getElementById("cart-quantity-id").style.display="none",console.log("e = "+e.toString()),await l(!0)})},l=async t=>{let n=`
 mutation cartCreate {
   cartCreate {
     cart {
@@ -69,16 +69,16 @@ mutation cartCreate {
     }
   }
 }
-`;document.getElementById("div-loader-id").style.display="block",console.log("BEFORE -- "),await fetch("https://209c5e-2.myshopify.com/api/2024-01/graphql.json",{method:"POST",body:JSON.stringify({query:e}),headers:{"X-Shopify-Storefront-Access-Token":p,"Content-type":"application/json; charset=UTF-8"}}).then(async o=>{console.log("ddddd ss");let t=await o.json(),n=t.data.cartCreate.cart.id;console.log(t.data.cartCreate.cart.checkoutUrl),console.log(n),localStorage.setItem("cart_id",n),await E(n)}).catch(o=>{console.log("e = "+o.toString())})},B=e=>{document.querySelectorAll(".cart-grid-item").forEach(o=>o.parentNode.removeChild(o));for(let o=0;o<e.length;o++){let t=e[o].node,n=document.createElement("div");n.className="row",n.innerHTML=x(t.id,t.merchandise.title,t.merchandise.product.images.edges[0].node.url,t.cost.subtotalAmount.amount,t.discountAllocations.length===0?"":t.discountAllocations[0].discountedAmount.amount,t.quantity);let i=document.getElementById("checkout-items-grid-id"),r=document.createElement("div");r.setAttribute("class","cart-grid-item"),r.appendChild(n),i.appendChild(r),document.getElementById(`remove_${t.id}`)?.addEventListener("click",async function(){await q(localStorage.getItem("cart_id"),t.id)})}},x=(e,o,t,n,i,r)=>(console.log("title = "+o),`
+`;return document.getElementById("div-loader-id").style.display="block",await fetch("https://209c5e-2.myshopify.com/api/2024-01/graphql.json",{method:"POST",body:JSON.stringify({query:n}),headers:{"X-Shopify-Storefront-Access-Token":y,"Content-type":"application/json; charset=UTF-8"}}).then(async e=>{let o=await e.json(),i=o.data.cartCreate.cart.id;return t&&(localStorage.setItem("cart_id",i),await S(i)),o.data.cartCreate.cart}).catch(e=>{console.log("e = "+e)})},x=t=>{document.querySelectorAll(".cart-grid-item").forEach(n=>n.parentNode.removeChild(n));for(let n=0;n<t.length;n++){let e=t[n].node,o=document.createElement("div");o.className="row",o.innerHTML=T(e.id,e.merchandise.title,e.merchandise.product.images.edges[0].node.url,e.cost.subtotalAmount.amount,e.discountAllocations.length===0?"":e.discountAllocations[0].discountedAmount.amount,e.quantity);let i=document.getElementById("checkout-items-grid-id"),c=document.createElement("div");c.setAttribute("class","cart-grid-item"),c.appendChild(o),i.appendChild(c),document.getElementById(`remove_${e.id}`)?.addEventListener("click",async function(){await L(localStorage.getItem("cart_id"),e.id)})}},T=(t,n,e,o,i,c)=>(console.log("title = "+n),`
 <div class="w-commerce-commercecartitem cart-item-wrapper">
     <img 
-        src=${t}
+        src=${e}
         alt="" class="w-commerce-commercecartitemimage cart-image-image">
     <div class="w-commerce-commercecartiteminfo">
         <div 
-            class="w-commerce-commercecartproductname cart-item-title">${o}</div>
+            class="w-commerce-commercecartproductname cart-item-title">${n}</div>
         <div 
-            class="cart-item-price">${n} AED</div>
+            class="cart-item-price">${o} AED</div>
 <ul 
             class="w-commerce-commercecartoptionlist"
             data-wf-collection="database.commerceOrder.userItems.0.product.f_sku_properties_3dr"
@@ -86,20 +86,20 @@ mutation cartCreate {
             
         </ul><a href="#" role=""
             class="w-inline-block" data-wf-cart-action="remove-item" 
-            aria-label="Remove item from cart" id="remove_${e}">
+            aria-label="Remove item from cart" id="remove_${t}">
             <div class="cart-remove-link">Remove</div>
         </a>
     </div>
 <input
         class="w-commerce-commercecartquantity input cart-quantity-input" required="" pattern="^[0-9]+$"
         inputmode="numeric" type="number" name="quantity" autocomplete="off" data-wf-cart-action="update-item-quantity"
-        data-commerce-sku-id="659d238ff90eb981ff648528" value="${r}" readonly>
+        data-commerce-sku-id="659d238ff90eb981ff648528" value="${c}" readonly>
 
-</div>`),g=async(e,o,t)=>{let n=`
+</div>`),f=async(t,n,e)=>{let o=`
  mutation AddToCart {
         cartLinesAdd(
-          cartId: "${o}",
-          lines: [{ quantity: ${e}, merchandiseId: "${t}"}]) {
+          cartId: "${n}",
+          lines: [{ quantity: ${t}, merchandiseId: "${e}" }]) {
           cart {
             lines(first: 100) {
               edges {
@@ -119,9 +119,43 @@ mutation cartCreate {
           }
         }
       }
-`;document.getElementById("div-loader-id").style.display="block",await fetch("https://209c5e-2.myshopify.com/api/2024-01/graphql.json",{method:"POST",body:JSON.stringify({query:n}),headers:{"X-Shopify-Storefront-Access-Token":p,"Content-type":"application/json"}}).then(async i=>{document.querySelector(".ths02-menu-bars-wrapper-12").click(),document.getElementById("div-loader-id").style.display="none",await m()}).catch(i=>{console.log("e = "+i.toString())})},q=async(e,o)=>{let t=`
+`;document.getElementById("div-loader-id").style.display="block",await fetch("https://209c5e-2.myshopify.com/api/2024-01/graphql.json",{method:"POST",body:JSON.stringify({query:o}),headers:{"X-Shopify-Storefront-Access-Token":y,"Content-type":"application/json"}}).then(async i=>{document.querySelector(".ths02-menu-bars-wrapper-12").click(),document.getElementById("div-loader-id").style.display="none",await u()}).catch(async i=>{console.log("e = "+i.toString()),await l(!0)})},h=async(t,n,e,o,i)=>{let c=`
+ mutation AddToCart {
+        cartLinesAdd(
+          cartId: "${n}",
+          lines: [{ 
+          attributes: [
+                        {
+                          key:"qr_id"
+                          value:"${o}"
+                        },
+                        {
+                          key:"plan"
+                          value:"${i}"
+                        }
+            ], quantity: ${t}, merchandiseId: "${e}"}]) {
+          cart {
+            lines(first: 100) {
+              edges {
+                node {
+                  id
+                  quantity
+                  merchandise {
+                    ... on ProductVariant {
+                      product {
+                        title
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+`;document.getElementById("div-loader-id").style.display="block",await fetch("https://209c5e-2.myshopify.com/api/2024-01/graphql.json",{method:"POST",body:JSON.stringify({query:c}),headers:{"X-Shopify-Storefront-Access-Token":y,"Content-type":"application/json"}}).then(async r=>await r.json()).catch(async r=>{console.log("e = "+r.toString()),await l(!0)})},L=async(t,n)=>{let e=`
 mutation cartLinesRemove {
-  cartLinesRemove(cartId: "${e}", lineIds: ["${o}"]) {
+  cartLinesRemove(cartId: "${t}", lineIds: ["${n}"]) {
     cart {
       id
     }
@@ -131,8 +165,8 @@ mutation cartLinesRemove {
     }
   }
 }
-`;document.getElementById("div-loader-id").style.display="block",await fetch("https://209c5e-2.myshopify.com/api/2024-01/graphql.json",{method:"POST",body:JSON.stringify({query:t}),headers:{"X-Shopify-Storefront-Access-Token":p,"Content-type":"application/json"}}).then(async n=>{console.log("result = "+n.data),console.log("FROM Delete"),document.getElementById("div-loader-id").style.display="none",await m()}).catch(n=>{console.log("e = "+n.toString())})};var b=(e=document)=>{let o="Last Published:";for(let t of e.childNodes)if(t.nodeType===Node.COMMENT_NODE&&t.textContent?.includes(o)){let n=t.textContent.trim().split(o)[1];if(n)return new Date(n)}};var I=e=>{let o=b();console.log(`Hello ${e}!`),console.log(`This site was last published on ${o?.toLocaleDateString("en-US",{year:"numeric",month:"long",day:"2-digit"})}.`)};var T="1dba4d16bdf57a57f61e90de5a60175d",C=async e=>{let o=null;return await fetch("https://209c5e-2.myshopify.com/api/2024-01/graphql.json",{method:"POST",body:JSON.stringify({query:e}),headers:{"X-Shopify-Storefront-Access-Token":T,"Content-type":"application/json"}}).then(async t=>{o=(await t.json()).data}).catch(t=>(console.log("e = "+t.toString()),"Error!")),o};var a="",l="",f="",d=0,u="",S=()=>{m();let e="",t=(document.currentScript?.baseURI.split("?")[1]).split("&");for(let n=0;n<t.length;n++){let i=t[n].split("=");i[0]==="product_id"&&(e=i[1])}L(),A(e)},L=()=>{document.getElementById("add-to-cart-btn-id").addEventListener("click",async function(){d===1&&a===""||d===2&&(a===""||l==="")||d===3&&(a===""||l===""||f==="")?document.getElementById("error-text-id").style.display="block":g(1,localStorage.getItem("cart_id"),u)}),document.getElementById("one-off-add-to-cart-id").addEventListener("click",async function(){if(d===1&&a==="")document.getElementById("one-off-error-text-id").style.display="block";else if(d===2&&(a===""||l===""))document.getElementById("one-off-error-text-id").style.display="block";else if(d===3&&(a===""||l===""||f===""))document.getElementById("one-off-error-text-id").style.display="block";else{let e=document.getElementById("product-quantity-field").value;console.log("valueeee = "+e),await g(e,localStorage.getItem("cart_id"),u),await g(e,localStorage.getItem("cart_id"),"gid://shopify/ProductVariant/40777319907395")}})},A=async e=>{let o=await C(`{
-  product(id:"gid://shopify/Product/${e}"){
+`;document.getElementById("div-loader-id").style.display="block",await fetch("https://209c5e-2.myshopify.com/api/2024-01/graphql.json",{method:"POST",body:JSON.stringify({query:e}),headers:{"X-Shopify-Storefront-Access-Token":y,"Content-type":"application/json"}}).then(async o=>{console.log("result = "+o.data),console.log("FROM Delete"),document.getElementById("div-loader-id").style.display="none",await u()}).catch(o=>{console.log("e = "+o.toString())})};var I=(t=document)=>{let n="Last Published:";for(let e of t.childNodes)if(e.nodeType===Node.COMMENT_NODE&&e.textContent?.includes(n)){let o=e.textContent.trim().split(n)[1];if(o)return new Date(o)}};var C=t=>{let n=I();console.log(`Hello ${t}!`),console.log(`This site was last published on ${n?.toLocaleDateString("en-US",{year:"numeric",month:"long",day:"2-digit"})}.`)};var k=()=>{console.log("initPurchaseFuncs");let t="",e=(document.currentScript?.baseURI.split("?")[1]).split("&");for(let o=0;o<e.length;o++){let i=e[o].split("=");i[0]==="id"&&(t=i[1])}document.getElementById("six-id").addEventListener("click",async function(){let o=await l(!1);await h(1,o.id,"gid://shopify/ProductVariant/41058158903363",t,"6-months"),window.open(o.checkoutUrl,"_blank")}),document.getElementById("recommend-id").addEventListener("click",async function(){let o=await l(!1);await h(1,o.id,"gid://shopify/ProductVariant/41058158936131",t,"1-year"),window.open(o.checkoutUrl,"_blank")}),document.getElementById("life-time-id").addEventListener("click",async function(){let o=await l(!1);await h(1,o.id,"gid://shopify/ProductVariant/41058158968899",t,"life-time"),window.open(o.checkoutUrl,"_blank")})};var A="1dba4d16bdf57a57f61e90de5a60175d",v=async t=>{let n=null;return await fetch("https://209c5e-2.myshopify.com/api/2024-01/graphql.json",{method:"POST",body:JSON.stringify({query:t}),headers:{"X-Shopify-Storefront-Access-Token":A,"Content-type":"application/json"}}).then(async e=>{n=(await e.json()).data}).catch(e=>(console.log("e = "+e.toString()),"Error!")),n};var d="",m="",b="",s=0,p="",B=()=>{u();let t="",e=(document.currentScript?.baseURI.split("?")[1]).split("&");for(let o=0;o<e.length;o++){let i=e[o].split("=");i[0]==="product_id"&&(t=i[1])}P(),_(t)},P=()=>{document.getElementById("add-to-cart-btn-id").addEventListener("click",async function(){s===1&&d===""||s===2&&(d===""||m==="")||s===3&&(d===""||m===""||b==="")?document.getElementById("error-text-id").style.display="block":f(1,localStorage.getItem("cart_id"),p)}),document.getElementById("one-off-add-to-cart-id").addEventListener("click",async function(){if(s===1&&d==="")document.getElementById("one-off-error-text-id").style.display="block";else if(s===2&&(d===""||m===""))document.getElementById("one-off-error-text-id").style.display="block";else if(s===3&&(d===""||m===""||b===""))document.getElementById("one-off-error-text-id").style.display="block";else{let t=document.getElementById("product-quantity-field").value;console.log("valueeee = "+t),await f(t,localStorage.getItem("cart_id"),p),await f(t,localStorage.getItem("cart_id"),"gid://shopify/ProductVariant/40777319907395")}})},_=async t=>{let n=await v(`{
+  product(id:"gid://shopify/Product/${t}"){
     title
     tags
     options {
@@ -145,8 +179,8 @@ mutation cartLinesRemove {
         node{
           id
           title
-        }}}}}`),t=o.product.options;d=t.length;for(let n=0;n<t.length;n++){document.getElementById(`option${n+1}-title-id`).style.display="block",document.getElementById(`option${n+1}-title-id`).textContent=t[n].name;for(let i=0;i<t[n].values.length;i++)P(t[n].values[i],t[n].id,`option${n+1}`,o.product.variants.edges)}};function P(e,o,t,n){let i=document.createElement("div");i.className="row",i.innerHTML=`
+        }}}}}`),e=n.product.options;s=e.length;for(let o=0;o<e.length;o++){document.getElementById(`option${o+1}-title-id`).style.display="block",document.getElementById(`option${o+1}-title-id`).textContent=e[o].name;for(let i=0;i<e[o].values.length;i++)O(e[o].values[i],e[o].id,`option${o+1}`,n.product.variants.edges)}};function O(t,n,e,o){let i=document.createElement("div");i.className="row",i.innerHTML=`
 
-<div id="${t}-item${e}" class="${t}div ${e}${o.substring(28)}">
-<div class="text-block-95">${e}</div></div>
-    `;let r=document.getElementById(`variants-${t}-grid-id`),s=document.createElement("div");s.setAttribute("class",`${t}-div`),s.appendChild(i),r.appendChild(s),document.getElementById(`${t}-item${e}`).addEventListener("click",function(){t==="option1"?a=e:t==="option2"?l=e:f=e,document.getElementById("error-text-id").style.display="none",document.getElementById("one-off-error-text-id").style.display="none",[...document.getElementsByClassName(`${t}div`)].forEach(c=>{c.style.borderColor="#f1eeee"}),[...document.getElementsByClassName(`${t}div ${e}${o.substring(28)}`)].forEach(c=>{c.style.borderColor="black"}),O(n)})}var O=e=>{if(d===1)for(let o=0;o<e.length;o++)e[o].node.title===a&&(u=e[o].node.id);else if(d===2)for(let o=0;o<e.length;o++)e[o].node.title===`${a} / ${l}`&&(u=e[o].node.id);else if(d===3)for(let o=0;o<e.length;o++)e[o].node.title===`${a} / ${l} / ${f}`&&(u=e[o].node.id)};window.Webflow||(window.Webflow=[]);window.Webflow.push(async()=>{I("John Do wewewewe")});m();if(document.currentScript?.baseURI.toString().includes("category-details")){let o=new URLSearchParams(window.location.search).get("collection");window.fsAttributes=window.fsAttributes||[],window.fsAttributes.push(["cmsload",async t=>{console.log("Hello from the CMS");let n=0,i=t.find(({wrapper:c})=>c.id==="products-cms-id")??t[0],[r]=i.items,s=r.element,w=await _(Number(o));i.clearItems(),await w.map(async c=>{s.id=c.id+"#becaby";let y=M(c,s);await i.addItems([y]),document.getElementById(`${c.id}#becaby`)?.addEventListener("click",function(){window.open(`https://becapy-new.webflow.io/product-details?product_id=${c.id}`,"_self")})});let h=await N();await h.map(async c=>{n++,c.id===Number(o)&&(document.getElementById("category-head-id")!=null&&(document.getElementById("category-head-id").textContent=c.title),document.getElementById("category-description-id").innerHTML=c.body_html),console.log("collectionsCount = "+n);let y="https://becapy-new.webflow.io/category-details?collection="+c.id;n===h.length?(console.log("collectionsCount = "+n),document.getElementById("flex-text-id").innerHTML+=`<a href=${y} class="text-decoration-none link">${c.title}</a>`):(console.log("collectionsCount = "+n),document.getElementById("flex-text-id").innerHTML+=`<a href=${y} class="text-decoration-none link">${c.title}</a> <div class="breadcrumb-divider-2">/</div>`)}),document.getElementById("loader-id").style.display="none",window.Webflow.push(function(){$("html").attr("data-wf-page","65cdfd5f1054c1ba09309d71"),window.Webflow&&window.Webflow.destroy(),window.Webflow&&window.Webflow.ready(),window.Webflow&&window.Webflow.require("ix2").init(),document.dispatchEvent(new Event("readystatechange"))})}])}else document.currentScript?.baseURI.toString().includes("product-details")&&S();var _=async e=>{try{return await(await fetch(`https://getproductsbycollectionidhttps-dkhndz7lcq-uc.a.run.app/?collectionId=${e}`)).json()}catch{return[]}},M=(e,o)=>{let t=o.cloneNode(!0),n=t.querySelector('[data-element="image"]'),i=t.querySelector('[data-element="title"]'),r=t.querySelector('[data-element="description"]'),s=t.querySelector('[data-element="price"]');return console.log(e.product.image),n&&e.product.image!==null&&(n.src=e.product.image.src),i&&(i.textContent=e.product.title),r&&(r.innerHTML=e.product.body_html),s&&(s.textContent=e.product.variants.length===0?"-":e.product.variants[0].price+" AED"),t};var N=async()=>{try{let e=[];return await fetch("https://getcustomcollections-dkhndz7lcq-uc.a.run.app").then(async o=>(e=(await o.json()).custom_collections,console.log(e[0].id),e)),e}catch{return[]}};})();
+<div id="${e}-item${t}" class="${e}div ${t}${n.substring(28)}">
+<div class="text-block-95">${t}</div></div>
+    `;let c=document.getElementById(`variants-${e}-grid-id`),r=document.createElement("div");r.setAttribute("class",`${e}-div`),r.appendChild(i),c.appendChild(r),document.getElementById(`${e}-item${t}`).addEventListener("click",function(){e==="option1"?d=t:e==="option2"?m=t:b=t,document.getElementById("error-text-id").style.display="none",document.getElementById("one-off-error-text-id").style.display="none",[...document.getElementsByClassName(`${e}div`)].forEach(a=>{a.style.borderColor="#f1eeee"}),[...document.getElementsByClassName(`${e}div ${t}${n.substring(28)}`)].forEach(a=>{a.style.borderColor="black"}),j(o)})}var j=t=>{if(s===1)for(let n=0;n<t.length;n++)t[n].node.title===d&&(p=t[n].node.id);else if(s===2)for(let n=0;n<t.length;n++)t[n].node.title===`${d} / ${m}`&&(p=t[n].node.id);else if(s===3)for(let n=0;n<t.length;n++)t[n].node.title===`${d} / ${m} / ${b}`&&(p=t[n].node.id)};window.Webflow||(window.Webflow=[]);window.Webflow.push(async()=>{C("John Do wewewewe")});u();if(document.currentScript?.baseURI.toString().includes("category-details")){let n=new URLSearchParams(window.location.search).get("collection");window.fsAttributes=window.fsAttributes||[],window.fsAttributes.push(["cmsload",async e=>{console.log("Hello from the CMS");let o=0,i=e.find(({wrapper:a})=>a.id==="products-cms-id")??e[0],[c]=i.items,r=c.element,w=await N(Number(n));i.clearItems(),await w.map(async a=>{r.id=a.id+"#becaby";let g=M(a,r);await i.addItems([g]),document.getElementById(`${a.id}#becaby`)?.addEventListener("click",function(){window.open(`https://becapy-new.webflow.io/product-details?product_id=${a.id}`,"_self")})});let E=await U();await E.map(async a=>{o++,a.id===Number(n)&&(document.getElementById("category-head-id")!=null&&(document.getElementById("category-head-id").textContent=a.title),document.getElementById("category-description-id").innerHTML=a.body_html),console.log("collectionsCount = "+o);let g="https://becapy-new.webflow.io/category-details?collection="+a.id;o===E.length?(console.log("collectionsCount = "+o),document.getElementById("flex-text-id").innerHTML+=`<a href=${g} class="text-decoration-none link">${a.title}</a>`):(console.log("collectionsCount = "+o),document.getElementById("flex-text-id").innerHTML+=`<a href=${g} class="text-decoration-none link">${a.title}</a> <div class="breadcrumb-divider-2">/</div>`)}),document.getElementById("loader-id").style.display="none",window.Webflow.push(function(){$("html").attr("data-wf-page","65cdfd5f1054c1ba09309d71"),window.Webflow&&window.Webflow.destroy(),window.Webflow&&window.Webflow.ready(),window.Webflow&&window.Webflow.require("ix2").init(),document.dispatchEvent(new Event("readystatechange"))})}])}else document.currentScript?.baseURI.toString().includes("product-details")?B():document.currentScript?.baseURI.toString().includes("purchase")&&k();var N=async t=>{try{return await(await fetch(`https://getproductsbycollectionidhttps-dkhndz7lcq-uc.a.run.app/?collectionId=${t}`)).json()}catch{return[]}},M=(t,n)=>{let e=n.cloneNode(!0),o=e.querySelector('[data-element="image"]'),i=e.querySelector('[data-element="title"]'),c=e.querySelector('[data-element="description"]'),r=e.querySelector('[data-element="price"]');return console.log(t.product.image),o&&t.product.image!==null&&(o.src=t.product.image.src),i&&(i.textContent=t.product.title),c&&(c.innerHTML=t.product.body_html),r&&(r.textContent=t.product.variants.length===0?"-":t.product.variants[0].price+" AED"),e};var U=async()=>{try{let t=[];return await fetch("https://getcustomcollections-dkhndz7lcq-uc.a.run.app").then(async n=>(t=(await n.json()).custom_collections,console.log(t[0].id),t)),t}catch{return[]}};})();

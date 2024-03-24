@@ -9,7 +9,7 @@ export const loadCart = async () => {
   if (cartId) {
     await fillCartItems(cartId);
   } else {
-    await createNewCart();
+    await createNewCart(true);
   }
 };
 
@@ -87,7 +87,6 @@ const fillCartItems = async (cartId: string) => {
       "Content-type": "application/json",
     }
   }).then(async (result) => {
-
     const ql = await result.json();
     console.log("Checkout URL = " + ql.data.cart.checkoutUrl);
     checkoutURL = ql.data.cart.checkoutUrl;
@@ -123,13 +122,14 @@ const fillCartItems = async (cartId: string) => {
       document.getElementById("cart-quantity-id")!.style.display = "none";
       document.getElementById("checkout-btn-id")!.style.display = "none";
     }
-  }).catch(e => {
+  }).catch(async (e) => {
     document.getElementById("cart-quantity-id")!.style.display = "none";
     console.log("e = " + e.toString());
+    await createNewCart(true);
   });
 };
 
-const createNewCart = async () => {
+export const createNewCart = async (withStorage: boolean) => {
 
   const query = `
 mutation cartCreate {
@@ -146,9 +146,7 @@ mutation cartCreate {
 }
 `;
   document.getElementById("div-loader-id")!.style.display = "block";
-
-  console.log("BEFORE -- ");
-  await fetch("https://209c5e-2.myshopify.com/api/2024-01/graphql.json", {
+  return await fetch("https://209c5e-2.myshopify.com/api/2024-01/graphql.json", {
     method: "POST",
     body: JSON.stringify({
       query: query,
@@ -159,15 +157,15 @@ mutation cartCreate {
       "Content-type": "application/json; charset=UTF-8"
     }
   }).then(async (result) => {
-    console.log("ddddd ss");
     const ql = await result.json();
     const cartId = ql.data.cartCreate.cart.id;
-    console.log(ql.data.cartCreate.cart.checkoutUrl);
-    console.log(cartId);
-    localStorage.setItem("cart_id", cartId);
-    await fillCartItems(cartId);
+    if (withStorage) {
+      localStorage.setItem("cart_id", cartId);
+      await fillCartItems(cartId);
+    }
+    return ql.data.cartCreate.cart;
   }).catch(e => {
-    console.log("e = " + e.toString());
+    console.log("e = " + e);
   });
 };
 
@@ -231,12 +229,16 @@ const getGridElement = (lineId: string, title: string, image: string, price: str
 </div>`;
 }
 
-export const addToCart = async (quantity: number, cartId: string, variantId: string) => {
+export const addToCart = async (
+  quantity: number,
+  cartId: string,
+  variantId: string,
+) => {
   const query = `
  mutation AddToCart {
         cartLinesAdd(
           cartId: "${cartId}",
-          lines: [{ quantity: ${quantity}, merchandiseId: "${variantId}"}]) {
+          lines: [{ quantity: ${quantity}, merchandiseId: "${variantId}" }]) {
           cart {
             lines(first: 100) {
               edges {
@@ -270,14 +272,74 @@ export const addToCart = async (quantity: number, cartId: string, variantId: str
     }
   }).then(async (result) => {
     document.querySelector('.ths02-menu-bars-wrapper-12')!.click();
-
     document.getElementById("div-loader-id")!.style.display = "none";
     await loadCart();
-
-  }).catch(e => {
+  }).catch(async (e) => {
     console.log("e = " + e.toString());
+    await createNewCart(true);
   });
 
+};
+
+export const addToCartForPlan = async (
+  quantity: number,
+  cartId: string,
+  variantId: string,
+  qr_id: string,
+  plan: string
+) => {
+  const query = `
+ mutation AddToCart {
+        cartLinesAdd(
+          cartId: "${cartId}",
+          lines: [{ 
+          attributes: [
+                        {
+                          key:"qr_id"
+                          value:"${qr_id}"
+                        },
+                        {
+                          key:"plan"
+                          value:"${plan}"
+                        }
+            ], quantity: ${quantity}, merchandiseId: "${variantId}"}]) {
+          cart {
+            lines(first: 100) {
+              edges {
+                node {
+                  id
+                  quantity
+                  merchandise {
+                    ... on ProductVariant {
+                      product {
+                        title
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+`;
+  document.getElementById("div-loader-id")!.style.display = "block";
+  await fetch("https://209c5e-2.myshopify.com/api/2024-01/graphql.json", {
+    method: "POST",
+    body: JSON.stringify({
+      query: query,
+    }),
+    headers: {
+      "X-Shopify-Storefront-Access-Token": storeFrontAccessToken,
+      "Content-type": "application/json",
+    }
+  }).then(async (result) => {
+    const ql = await result.json();
+    return ql;
+  }).catch(async (e) => {
+    console.log("e = " + e.toString());
+    await createNewCart(true);
+  });
 };
 
 

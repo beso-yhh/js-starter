@@ -1,5 +1,6 @@
-import { addToCart, loadCart } from '$utils/cart';
+import { loadCart } from '$utils/cart';
 import { greetUser } from '$utils/greet';
+import { initPurchaseFuncs } from '$utils/purchase';
 
 import type { Collection, CollectionProduct } from './cms/populate-external-data/types';
 import { initProductDetails } from './products/products-details';
@@ -119,6 +120,8 @@ if (document.currentScript?.baseURI.toString().includes('category-details')) {
   ]);
 } else if (document.currentScript?.baseURI.toString().includes('product-details')) {
   initProductDetails();
+} else if (document.currentScript?.baseURI.toString().includes('purchase')) {
+  initPurchaseFuncs();
 }
 
 const getFirstVariant = async (id: string) => {
