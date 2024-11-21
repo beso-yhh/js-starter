@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-const storeFrontAccessToken = "1dba4d16bdf57a57f61e90de5a60175d";
+const storeFrontAccessToken = "a6f6d54288d4907127991e86952bb7f9";
 let checkoutURL = "";
 
 export const loadCart = async () => {

@@ -147,7 +147,7 @@ const getFirstVariant = async (id: string) => {
       query: query,
     }),
     headers: {
-      'X-Shopify-Storefront-Access-Token': '1dba4d16bdf57a57f61e90de5a60175d',
+      'X-Shopify-Storefront-Access-Token': 'a6f6d54288d4907127991e86952bb7f9',
       'Content-type': 'application/json',
     },
   })
