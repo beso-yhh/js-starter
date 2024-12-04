@@ -25,6 +25,12 @@ window.Webflow.push(async () => {
  */
 loadCart();
 if (document.currentScript?.baseURI.toString().includes('category-details')) {
+  let url = '';
+  if (document.currentScript?.baseURI.toString().includes('5eebf742287825892cd6c6d44ee1')) {
+    url = 'https://becapy-new-5eebf742287825892cd6c6d44ee1.webflow.io/';
+  } else {
+    url = 'https://becapy-new-5eebf742287825892cd6c6d44ee1.webflow.io/';
+  }
   // console.log('document.currentScript?.baseURI = ' + document.currentScript?.baseURI);
   const searchParams = new URLSearchParams(window.location.search);
   const currentCollectionId = searchParams.get('collection');
@@ -57,10 +63,7 @@ if (document.currentScript?.baseURI.toString().includes('category-details')) {
         document
           .getElementById(`${collectionProduct.id}#becaby`)
           ?.addEventListener('click', function () {
-            window.open(
-              `https://becapy-new.webflow.io/product-details?product_id=${collectionProduct.id}`,
-              '_self'
-            );
+            window.open(`${url}/product-details?product_id=${collectionProduct.id}`, '_self');
           });
       });
       // Populate the list
@@ -91,18 +94,16 @@ if (document.currentScript?.baseURI.toString().includes('category-details')) {
         //   currentCollectionId!
         // );
         console.log('collectionsCount = ' + collectionsCount);
-        const url =
-          'https://becapy-new-5eebf742287825892cd6c6d44ee1.webflow.io/category-details?collection=' +
-          collection.id;
+        const hURL = `${url}/category-details?collection=` + collection.id;
         if (collectionsCount === flowersCollections.length) {
           console.log('collectionsCount = ' + collectionsCount);
           document.getElementById('flex-text-id')!.innerHTML +=
-            `<a href=${url} class="text-decoration-none link">${collection.title}</a>`;
+            `<a href=${hURL} class="text-decoration-none link">${collection.title}</a>`;
         } else {
           console.log('collectionsCount = ' + collectionsCount);
 
           document.getElementById('flex-text-id')!.innerHTML +=
-            `<a href=${url} class="text-decoration-none link">${collection.title}</a> <div class="breadcrumb-divider-2">/</div>`;
+            `<a href=${hURL} class="text-decoration-none link">${collection.title}</a> <div class="breadcrumb-divider-2">/</div>`;
         }
         //await collectionInstance.addItems([item]);
         // document.getElementById(`${collection.id}#becaby`)?.addEventListener('click', function () {
