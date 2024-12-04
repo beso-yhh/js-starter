@@ -67,6 +67,8 @@ if (document.currentScript?.baseURI.toString().includes('category-details')) {
       // const collectionInstance =
       //   listInstances.find(({ wrapper }) => wrapper.id === 'categories-cms-id') ?? listInstances[0];
       const collections = await getCustomCategories();
+      const flowersCollections = await getFlowersCategories();
+
       // console.log('collections[0].title = ' + collections[0].title);
       // const [firstCollectioItem] = collectionInstance.items;
       // const collectionItemTemplateElement = firstCollectioItem.element;
@@ -74,7 +76,7 @@ if (document.currentScript?.baseURI.toString().includes('category-details')) {
       // collectionInstance.clearItems();
 
       // Create the new items
-      await collections.map(async (collection) => {
+      await flowersCollections.map(async (collection) => {
         collectionsCount++;
         if (collection.id === Number(currentCollectionId)) {
           if (document.getElementById('category-head-id') != null) {
@@ -90,7 +92,7 @@ if (document.currentScript?.baseURI.toString().includes('category-details')) {
         // );
         console.log('collectionsCount = ' + collectionsCount);
         const url = 'https://becapy-new.webflow.io/category-details?collection=' + collection.id;
-        if (collectionsCount === collections.length) {
+        if (collectionsCount === flowersCollections.length) {
           console.log('collectionsCount = ' + collectionsCount);
           document.getElementById('flex-text-id')!.innerHTML +=
             `<a href=${url} class="text-decoration-none link">${collection.title}</a>`;
@@ -255,11 +257,37 @@ const getCustomCategories = async (): Promise<Collection[]> => {
     let data: Collection[] = [];
     await fetch('https://getcustomcollections-dkhndz7lcq-uc.a.run.app').then(async (result) => {
       data = (await result.json())['custom_collections'];
-      console.log(data[0].id);
       return data;
     });
 
     return data;
+  } catch (error) {
+    return [];
+  }
+};
+
+const getFlowersCategories = async (): Promise<Collection[]> => {
+  try {
+    let data: Collection[] = [];
+    const fR: Collection[] = [];
+    await fetch('https://getcustomcollections-dkhndz7lcq-uc.a.run.app').then(async (result) => {
+      data = (await result.json())['custom_collections'];
+      for (let i = 0; i < data.length; i++) {
+        if (
+          data[i].id === 287584649283 ||
+          data[i].id === 287556894787 ||
+          data[i].id === 287582322755 ||
+          data[i].id === 287584550979 ||
+          data[i].id === 287584616515 ||
+          data[i].id === 287556927555
+        ) {
+          fR.push(data[i]);
+        }
+      }
+      return fR;
+    });
+
+    return fR;
   } catch (error) {
     return [];
   }
