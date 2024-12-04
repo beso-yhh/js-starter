@@ -91,7 +91,9 @@ if (document.currentScript?.baseURI.toString().includes('category-details')) {
         //   currentCollectionId!
         // );
         console.log('collectionsCount = ' + collectionsCount);
-        const url = 'https://becapy-new.webflow.io/category-details?collection=' + collection.id;
+        const url =
+          'https://becapy-new-5eebf742287825892cd6c6d44ee1.webflow.io/category-details?collection=' +
+          collection.id;
         if (collectionsCount === flowersCollections.length) {
           console.log('collectionsCount = ' + collectionsCount);
           document.getElementById('flex-text-id')!.innerHTML +=
