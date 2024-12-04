@@ -27,9 +27,9 @@ loadCart();
 if (document.currentScript?.baseURI.toString().includes('category-details')) {
   let url = '';
   if (document.currentScript?.baseURI.toString().includes('5eebf742287825892cd6c6d44ee1')) {
-    url = 'https://becapy-new-5eebf742287825892cd6c6d44ee1.webflow.io/';
+    url = 'https://becapy-new-5eebf742287825892cd6c6d44ee1.webflow.io';
   } else {
-    url = 'https://becapy-new-5eebf742287825892cd6c6d44ee1.webflow.io/';
+    url = 'https://becapy-new.webflow.io/';
   }
   // console.log('document.currentScript?.baseURI = ' + document.currentScript?.baseURI);
   const searchParams = new URLSearchParams(window.location.search);
@@ -79,40 +79,51 @@ if (document.currentScript?.baseURI.toString().includes('category-details')) {
       // collectionInstance.clearItems();
 
       // Create the new items
-      await flowersCollections.map(async (collection) => {
-        collectionsCount++;
-        if (collection.id === Number(currentCollectionId)) {
-          if (document.getElementById('category-head-id') != null) {
-            document.getElementById('category-head-id')!.textContent = collection.title;
+      if (document.currentScript?.baseURI.toString().includes('5eebf742287825892cd6c6d44ee1')) {
+        await flowersCollections.map(async (collection) => {
+          collectionsCount++;
+          if (collection.id === Number(currentCollectionId)) {
+            if (document.getElementById('category-head-id') != null) {
+              document.getElementById('category-head-id')!.textContent = collection.title;
+            }
+            document.getElementById('category-description-id')!.innerHTML = collection.body_html;
           }
-          document.getElementById('category-description-id')!.innerHTML = collection.body_html;
-        }
-        // collectionItemTemplateElement.id = collection.id + '#becaby';
-        // const item = createCollectionItem(
-        //   collection,
-        //   collectionItemTemplateElement,
-        //   currentCollectionId!
-        // );
-        console.log('collectionsCount = ' + collectionsCount);
-        const hURL = `${url}/category-details?collection=` + collection.id;
-        if (collectionsCount === flowersCollections.length) {
           console.log('collectionsCount = ' + collectionsCount);
-          document.getElementById('flex-text-id')!.innerHTML +=
-            `<a href=${hURL} class="text-decoration-none link">${collection.title}</a>`;
-        } else {
-          console.log('collectionsCount = ' + collectionsCount);
+          const hURL = `${url}/category-details?collection=` + collection.id;
+          if (collectionsCount === flowersCollections.length) {
+            console.log('collectionsCount = ' + collectionsCount);
+            document.getElementById('flex-text-id')!.innerHTML +=
+              `<a href=${hURL} class="text-decoration-none link">${collection.title}</a>`;
+          } else {
+            console.log('collectionsCount = ' + collectionsCount);
 
-          document.getElementById('flex-text-id')!.innerHTML +=
-            `<a href=${hURL} class="text-decoration-none link">${collection.title}</a> <div class="breadcrumb-divider-2">/</div>`;
-        }
-        //await collectionInstance.addItems([item]);
-        // document.getElementById(`${collection.id}#becaby`)?.addEventListener('click', function () {
-        //   window.open(
-        //     `https://becapy-new.webflow.io/category-details?collection=${collection.id}`,
-        //     '_self'
-        //   );
-        // });
-      });
+            document.getElementById('flex-text-id')!.innerHTML +=
+              `<a href=${hURL} class="text-decoration-none link">${collection.title}</a> <div class="breadcrumb-divider-2">/</div>`;
+          }
+        });
+      } else {
+        await collections.map(async (collection) => {
+          collectionsCount++;
+          if (collection.id === Number(currentCollectionId)) {
+            if (document.getElementById('category-head-id') != null) {
+              document.getElementById('category-head-id')!.textContent = collection.title;
+            }
+            document.getElementById('category-description-id')!.innerHTML = collection.body_html;
+          }
+          console.log('collectionsCount = ' + collectionsCount);
+          const hURL = `${url}/category-details?collection=` + collection.id;
+          if (collectionsCount === collections.length) {
+            console.log('collectionsCount = ' + collectionsCount);
+            document.getElementById('flex-text-id')!.innerHTML +=
+              `<a href=${hURL} class="text-decoration-none link">${collection.title}</a>`;
+          } else {
+            console.log('collectionsCount = ' + collectionsCount);
+
+            document.getElementById('flex-text-id')!.innerHTML +=
+              `<a href=${hURL} class="text-decoration-none link">${collection.title}</a> <div class="breadcrumb-divider-2">/</div>`;
+          }
+        });
+      }
       document.getElementById('loader-id')!.style.display = 'none';
       window.Webflow.push(function () {
         $('html').attr('data-wf-page', '65cdfd5f1054c1ba09309d71');
