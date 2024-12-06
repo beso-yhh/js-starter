@@ -269,7 +269,8 @@ const getFlowersCategories = async (): Promise<Collection[]> => {
           data[i].id === 287582322755 ||
           data[i].id === 287584550979 ||
           data[i].id === 287584616515 ||
-          data[i].id === 287556927555
+          data[i].id === 287556927555 ||
+          data[i].id === 287556075587
         ) {
           fR.push(data[i]);
         }
